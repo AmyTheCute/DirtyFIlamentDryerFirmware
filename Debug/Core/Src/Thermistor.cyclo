@@ -1,0 +1,4 @@
+../Core/Src/Thermistor.c:14:6:Thermistor_Init	2
+../Core/Src/Thermistor.c:21:7:Thermistor_get_temp	2
+../Core/Src/Thermistor.c:30:7:ADC_to_Temp	1
+../Core/Src/Thermistor.c:43:6:Thermistor_Process	2

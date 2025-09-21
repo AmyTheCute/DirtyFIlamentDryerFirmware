@@ -1,0 +1,4 @@
+../Core/Src/Thermistor.c:14:6:Thermistor_Init	16	static
+../Core/Src/Thermistor.c:21:7:Thermistor_get_temp	16	static
+../Core/Src/Thermistor.c:30:7:ADC_to_Temp	48	static
+../Core/Src/Thermistor.c:43:6:Thermistor_Process	24	static

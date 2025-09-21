@@ -11,6 +11,7 @@
 uint8_t array_index = 0;
 float temp_history[SAMPLES];
 
+// Initialized the Thermistor library.
 void Thermistor_Init() {
 	array_index = 0;
 	for(int i = 0; i < SAMPLES; i++){

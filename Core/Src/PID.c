@@ -22,7 +22,7 @@ double PID_GetDutyCycle(float current, float target) {
 	integralSum -= derivative;
 
 	if(porportionalValue < 100.0){
-		integralSum += (PID_I * error); // ToDO: Take time elapsed into consideration.
+		integralSum += (PID_I * error); // ToDo: Take time elapsed into consideration.
 	}
 
 	/* Clamp results */

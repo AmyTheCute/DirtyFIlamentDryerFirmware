@@ -51,6 +51,9 @@
 #define PIN_FAN GPIO_PIN_3
 
 #define MAX_TEMP 80
+
+#define DISP_FREQ 50 // Frequency of the display refreshing in milliseconds
+#define CALC_FREQ 10 // Frequency of the thermal and input procesing in milliseconds.
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -161,15 +164,15 @@ int main(void)
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
 
 
-  HAL_Delay(1000); // Wait for power supply to stabilizebrain
+  HAL_Delay(1000); // Wait for power supply to stabilize
   HAL_ADCEx_Calibration_Start(&hadc1);
 
 
   Thermistor_Init();
   ssd1306_Init();
-
+  
+  // Menu Init.
   program_state = MAIN_MENU;
-
   menu_size = sizeof(filament_names)/sizeof(filament_names[0]);
 
 
@@ -179,51 +182,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(since_last(last_screen_update) >= 50) {
+	  if(since_last(last_screen_update) >= DISP_FREQ) { // Update screen everyy 50ms
 		  update_screen();
 		  last_screen_update = HAL_GetTick();
 	  }
-	  if(since_last(last_math_update) >= 10 ) {
+	  if(since_last(last_math_update) >= CALC_FREQ ) { // Process inputs and set PWM output every 10ms
 		  update_inputs();
 		  Therm_Process();
 		  last_math_update = HAL_GetTick();
 	  }
-//	  ssd1306_Fill(Black);
-//	  char text[10];
-//	  itoa(button_left, text, 2);//function to convert the int into a string (3rd argument 10 = base 10)
-//	  ssd1306_SetCursor(1, 1);
-//	  ssd1306_WriteString("LEFT: ",Font_6x8, White);
-//	  ssd1306_SetCursor(60, 1);
-//	  ssd1306_WriteString(text, Font_6x8, White);
-//
-//	  itoa(button_select, text, 2);//function to convert the int into a string (3rd argument 10 = base 10)
-//	  ssd1306_SetCursor(1, 10);
-//	  ssd1306_WriteString("SEL: ",Font_6x8, White);
-//	  ssd1306_SetCursor(60, 10);
-//	  ssd1306_WriteString(text, Font_6x8, White);
-//
-//	  itoa(button_right, text, 2);//function to convert the int into a string (3rd argument 10 = base 10)
-//	  ssd1306_SetCursor(1, 20);
-//	  ssd1306_WriteString("RIGHT: ",Font_6x8, White);
-//	  ssd1306_SetCursor(60, 20);
-//	  ssd1306_WriteString(text, Font_6x8, White);
-
-//	  if(is_pressed(button_left)) {
-//		  ssd1306_SetCursor(60, 10);
-//		  ssd1306_WriteString("LEFT", Font_6x8, White);
-//	  }
-//
-//	  if(is_pressed(button_right)) {
-//	  		  ssd1306_SetCursor(60, 10);
-//	  		  ssd1306_WriteString("RIGHT", Font_6x8, White);
-//	  	  }
-//	  if(is_pressed(button_select)) {
-//	  		  ssd1306_SetCursor(60, 10);
-//	  		  ssd1306_WriteString("SELECT", Font_6x8, White);
-//	  	  }
-//	  ssd1306_UpdateScreen();
-
-
 
     /* USER CODE END WHILE */
 
@@ -453,8 +420,10 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void update_screen() {
 	  long uint32_t =  HAL_GetTick();
+
+    // Heating Menu
 	  if(program_state == HEATING) {
-		  ssd1306_Fill(Black);
+		  ssd1306_Fill(Black); 
 		  float temp = Thermistor_get_temp();
 		  snprintf(text, 10, "%.2f/%.0f", Thermistor_get_temp(), targetTemp);
 		  ssd1306_SetCursor(1, 1);
@@ -471,7 +440,8 @@ void update_screen() {
 		  ssd1306_WriteString("Heater: ",Font_6x8, White);
 		  ssd1306_SetCursor(50, 10);
 		  ssd1306_WriteString(text, Font_6x8, White);
-
+    
+    // Main Menu
 	  } else if (program_state == MAIN_MENU) {
 
 		  ssd1306_Fill(Black);

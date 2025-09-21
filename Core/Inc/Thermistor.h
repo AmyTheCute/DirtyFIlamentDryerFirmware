@@ -21,20 +21,17 @@
 #define C_CONSTANT 0.7990237204e-07
 
 //Array index for rolling average
-extern uint8_t array_index;
 
-extern void Thermistor_Init();
+
+void Thermistor_Init();
 
 // Converts a 12 bit ADC reading to temperature based on the Steinhart-Hart Equation
-extern float ADC_to_Temp(uint16_t reading);
+float ADC_to_Temp(uint16_t reading);
 
 // Returns a rolling average of the temperature.
-extern float Thermistor_get_temp();
+float Thermistor_get_temp();
 // Adds value to sample array
-extern void Thermistor_Process(uint16_t value);
-
-extern float temp_history[SAMPLES];
-
+void Thermistor_Process(uint16_t value);
 
 
 

@@ -27,25 +27,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  0000c204  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000f4b4  00000000  00000000  0000c22d  2**0
+ 12 .debug_info   0000f48d  00000000  00000000  0000c22d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00002a05  00000000  00000000  0001b6e1  2**0
+ 13 .debug_abbrev 000029dc  00000000  00000000  0001b6ba  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001028  00000000  00000000  0001e0e8  2**3
+ 14 .debug_aranges 00001028  00000000  00000000  0001e098  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000c7c  00000000  00000000  0001f110  2**0
+ 15 .debug_rnglists 00000c7c  00000000  00000000  0001f0c0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00019e7f  00000000  00000000  0001fd8c  2**0
+ 16 .debug_macro  00019e8b  00000000  00000000  0001fd3c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00013add  00000000  00000000  00039c0b  2**0
+ 17 .debug_line   00013add  00000000  00000000  00039bc7  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000926cf  00000000  00000000  0004d6e8  2**0
+ 18 .debug_str    0009271a  00000000  00000000  0004d6a4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000dfdb7  2**0
+ 19 .comment      00000043  00000000  00000000  000dfdbe  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00005658  00000000  00000000  000dfdfc  2**2
+ 20 .debug_frame  00005658  00000000  00000000  000dfe04  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000058  00000000  00000000  000e5454  2**0
+ 21 .debug_line_str 00000058  00000000  00000000  000e545c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1467,10 +1467,10 @@ Disassembly of section .text:
  800110e:	bf00      	nop
 
 08001110 <PID_GetDutyCycle>:
-double PID_P = 55.0, PID_I = 0.004, PID_D = 0.002; //50Kp/0Ki/0Kd stable at 58.75/60
 double integralSum = 0.0;
 double porportionalValue = 0.0;
 double last_input = 0.0;
+
 
 double PID_GetDutyCycle(float current, float target) {
  8001110:	b580      	push	{r7, lr}
@@ -1535,7 +1535,7 @@ double PID_GetDutyCycle(float current, float target) {
  800119c:	4603      	mov	r3, r0
  800119e:	2b00      	cmp	r3, #0
  80011a0:	d014      	beq.n	80011cc <PID_GetDutyCycle+0xbc>
-		integralSum += (PID_I * error); // ToDO: Take time elapsed into consideration.
+		integralSum += (PID_I * error); // ToDo: Take time elapsed into consideration.
  80011a2:	4b43      	ldr	r3, [pc, #268]	@ (80012b0 <PID_GetDutyCycle+0x1a0>)
  80011a4:	e9d3 0100 	ldrd	r0, r1, [r3]
  80011a8:	e9d7 2304 	ldrd	r2, r3, [r7, #16]
@@ -1977,24 +1977,24 @@ int main(void)
  8001510:	4823      	ldr	r0, [pc, #140]	@ (80015a0 <main+0xac>)
  8001512:	f003 f973 	bl	80047fc <HAL_TIM_Base_Start_IT>
 
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_R, GPIO_PIN_SET);
  8001516:	2201      	movs	r2, #1
  8001518:	f44f 7100 	mov.w	r1, #512	@ 0x200
  800151c:	4821      	ldr	r0, [pc, #132]	@ (80015a4 <main+0xb0>)
  800151e:	f001 feaa 	bl	8003276 <HAL_GPIO_WritePin>
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_G, GPIO_PIN_SET);
  8001522:	2201      	movs	r2, #1
  8001524:	f44f 6180 	mov.w	r1, #1024	@ 0x400
  8001528:	481e      	ldr	r0, [pc, #120]	@ (80015a4 <main+0xb0>)
  800152a:	f001 fea4 	bl	8003276 <HAL_GPIO_WritePin>
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_SET);
  800152e:	2201      	movs	r2, #1
  8001530:	f44f 6100 	mov.w	r1, #2048	@ 0x800
  8001534:	481b      	ldr	r0, [pc, #108]	@ (80015a4 <main+0xb0>)
  8001536:	f001 fe9e 	bl	8003276 <HAL_GPIO_WritePin>
 
 
-  HAL_Delay(1000); // Wait for power supply to stabilizebrain
+  HAL_Delay(1000); // Wait for power supply to stabilize
  800153a:	f44f 707a 	mov.w	r0, #1000	@ 0x3e8
  800153e:	f000 ff21 	bl	8002384 <HAL_Delay>
   HAL_ADCEx_Calibration_Start(&hadc1);
@@ -2006,12 +2006,12 @@ int main(void)
  8001548:	f7ff feb4 	bl	80012b4 <Thermistor_Init>
   ssd1306_Init();
  800154c:	f003 fd30 	bl	8004fb0 <ssd1306_Init>
-
+  
+  // Menu Init.
   program_state = MAIN_MENU;
  8001550:	4b16      	ldr	r3, [pc, #88]	@ (80015ac <main+0xb8>)
  8001552:	2200      	movs	r2, #0
  8001554:	701a      	strb	r2, [r3, #0]
-
   menu_size = sizeof(filament_names)/sizeof(filament_names[0]);
  8001556:	4b16      	ldr	r3, [pc, #88]	@ (80015b0 <main+0xbc>)
  8001558:	2203      	movs	r2, #3
@@ -2021,7 +2021,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(since_last(last_screen_update) >= 50) {
+	  if(since_last(last_screen_update) >= DISP_FREQ) { // Update screen everyy 50ms
  800155c:	4b15      	ldr	r3, [pc, #84]	@ (80015b4 <main+0xc0>)
  800155e:	681b      	ldr	r3, [r3, #0]
  8001560:	4618      	mov	r0, r3
@@ -2037,7 +2037,7 @@ int main(void)
  8001576:	4a0f      	ldr	r2, [pc, #60]	@ (80015b4 <main+0xc0>)
  8001578:	6013      	str	r3, [r2, #0]
 	  }
-	  if(since_last(last_math_update) >= 10 ) {
+	  if(since_last(last_math_update) >= CALC_FREQ ) { // Process inputs and set PWM output every 10ms
  800157a:	4b0f      	ldr	r3, [pc, #60]	@ (80015b8 <main+0xc4>)
  800157c:	681b      	ldr	r3, [r3, #0]
  800157e:	4618      	mov	r0, r3
@@ -2054,7 +2054,7 @@ int main(void)
  8001596:	4603      	mov	r3, r0
  8001598:	4a07      	ldr	r2, [pc, #28]	@ (80015b8 <main+0xc4>)
  800159a:	6013      	str	r3, [r2, #0]
-	  if(since_last(last_screen_update) >= 50) {
+	  if(since_last(last_screen_update) >= DISP_FREQ) { // Update screen everyy 50ms
  800159c:	e7de      	b.n	800155c <main+0x68>
  800159e:	bf00      	nop
  80015a0:	20000304 	.word	0x20000304
@@ -2616,12 +2616,14 @@ void update_screen() {
  80018ce:	f000 fd4f 	bl	8002370 <HAL_GetTick>
  80018d2:	4603      	mov	r3, r0
  80018d4:	60fb      	str	r3, [r7, #12]
+
+    // Heating Menu
 	  if(program_state == HEATING) {
  80018d6:	4b74      	ldr	r3, [pc, #464]	@ (8001aa8 <update_screen+0x1e0>)
  80018d8:	781b      	ldrb	r3, [r3, #0]
  80018da:	2b01      	cmp	r3, #1
  80018dc:	d173      	bne.n	80019c6 <update_screen+0xfe>
-		  ssd1306_Fill(Black);
+		  ssd1306_Fill(Black); 
  80018de:	2000      	movs	r0, #0
  80018e0:	f003 fbd0 	bl	8005084 <ssd1306_Fill>
 		  float temp = Thermistor_get_temp();
@@ -2730,7 +2732,8 @@ void update_screen() {
  80019be:	483d      	ldr	r0, [pc, #244]	@ (8001ab4 <update_screen+0x1ec>)
  80019c0:	f003 fc82 	bl	80052c8 <ssd1306_WriteString>
  80019c4:	e065      	b.n	8001a92 <update_screen+0x1ca>
-
+    
+    // Main Menu
 	  } else if (program_state == MAIN_MENU) {
  80019c6:	4b38      	ldr	r3, [pc, #224]	@ (8001aa8 <update_screen+0x1e0>)
  80019c8:	781b      	ldrb	r3, [r3, #0]
@@ -2889,7 +2892,7 @@ void update_inputs() {
  8001b18:	4b56      	ldr	r3, [pc, #344]	@ (8001c74 <update_inputs+0x180>)
  8001b1a:	701a      	strb	r2, [r3, #0]
 
-	button_left.poll  |= HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_LEFT); // wrong button soldered on LEFT
+	button_left.poll  |= HAL_GPIO_ReadPin(PIN_BUTTON_LEFT); // wrong button soldered on LEFT
  8001b1c:	2102      	movs	r1, #2
  8001b1e:	4856      	ldr	r0, [pc, #344]	@ (8001c78 <update_inputs+0x184>)
  8001b20:	f001 fb92 	bl	8003248 <HAL_GPIO_ReadPin>
@@ -2901,7 +2904,7 @@ void update_inputs() {
  8001b2e:	b2da      	uxtb	r2, r3
  8001b30:	4b4e      	ldr	r3, [pc, #312]	@ (8001c6c <update_inputs+0x178>)
  8001b32:	701a      	strb	r2, [r3, #0]
-	button_select.poll  |=   !HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_SELECT);
+	button_select.poll  |=   !HAL_GPIO_ReadPin(PIN_BUTTON_SELECT);
  8001b34:	2101      	movs	r1, #1
  8001b36:	4850      	ldr	r0, [pc, #320]	@ (8001c78 <update_inputs+0x184>)
  8001b38:	f001 fb86 	bl	8003248 <HAL_GPIO_ReadPin>
@@ -2921,7 +2924,7 @@ void update_inputs() {
  8001b56:	b2da      	uxtb	r2, r3
  8001b58:	4b45      	ldr	r3, [pc, #276]	@ (8001c70 <update_inputs+0x17c>)
  8001b5a:	701a      	strb	r2, [r3, #0]
-	button_right.poll  |=  !HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_RIGHT);
+	button_right.poll  |=  !HAL_GPIO_ReadPin(PIN_BUTTON_RIGHT);
  8001b5c:	2104      	movs	r1, #4
  8001b5e:	4846      	ldr	r0, [pc, #280]	@ (8001c78 <update_inputs+0x184>)
  8001b60:	f001 fb72 	bl	8003248 <HAL_GPIO_ReadPin>
@@ -3258,24 +3261,24 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
  8001db6:	781b      	ldrb	r3, [r3, #0]
  8001db8:	429a      	cmp	r2, r3
  8001dba:	d80b      	bhi.n	8001dd4 <HAL_TIM_PeriodElapsedCallback+0x40>
-		HAL_GPIO_WritePin(GPIO_HEATER, PIN_HEATER, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(PIN_HEATER, GPIO_PIN_SET);
  8001dbc:	2201      	movs	r2, #1
  8001dbe:	2120      	movs	r1, #32
  8001dc0:	4812      	ldr	r0, [pc, #72]	@ (8001e0c <HAL_TIM_PeriodElapsedCallback+0x78>)
  8001dc2:	f001 fa58 	bl	8003276 <HAL_GPIO_WritePin>
-		HAL_GPIO_WritePin(GPIO_LED, PIN_LED_B, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_RESET);
  8001dc6:	2200      	movs	r2, #0
  8001dc8:	f44f 6100 	mov.w	r1, #2048	@ 0x800
  8001dcc:	4810      	ldr	r0, [pc, #64]	@ (8001e10 <HAL_TIM_PeriodElapsedCallback+0x7c>)
  8001dce:	f001 fa52 	bl	8003276 <HAL_GPIO_WritePin>
  8001dd2:	e00a      	b.n	8001dea <HAL_TIM_PeriodElapsedCallback+0x56>
 	} else {
-		HAL_GPIO_WritePin(GPIO_HEATER, PIN_HEATER, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(PIN_HEATER, GPIO_PIN_RESET);
  8001dd4:	2200      	movs	r2, #0
  8001dd6:	2120      	movs	r1, #32
  8001dd8:	480c      	ldr	r0, [pc, #48]	@ (8001e0c <HAL_TIM_PeriodElapsedCallback+0x78>)
  8001dda:	f001 fa4c 	bl	8003276 <HAL_GPIO_WritePin>
-		HAL_GPIO_WritePin(GPIO_LED, PIN_LED_B, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_SET);
  8001dde:	2201      	movs	r2, #1
  8001de0:	f44f 6100 	mov.w	r1, #2048	@ 0x800
  8001de4:	480a      	ldr	r0, [pc, #40]	@ (8001e10 <HAL_TIM_PeriodElapsedCallback+0x7c>)

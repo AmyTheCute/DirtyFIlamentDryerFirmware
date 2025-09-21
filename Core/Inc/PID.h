@@ -8,11 +8,15 @@
 #ifndef INC_PID_H_
 #define INC_PID_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Returns a duty cycle value based on the temperature 
 double PID_GetDutyCycle(float current, float target);
 
-extern double PID_P, PID_I, PID_D;
-extern double integralSum;
-extern double last_output;
+#ifdef __cplusplus
+ }
+#endif
 
 #endif /* INC_PID_H_ */

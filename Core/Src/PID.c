@@ -12,6 +12,7 @@ double integralSum = 0.0;
 double porportionalValue = 0.0;
 double last_input = 0.0;
 
+
 double PID_GetDutyCycle(float current, float target) {
 	double error = target - current;
 

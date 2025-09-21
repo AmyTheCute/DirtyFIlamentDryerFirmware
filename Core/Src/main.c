@@ -37,17 +37,17 @@
 /* USER CODE BEGIN PD */
 
 #define GPIO_LED GPIOB
-#define PIN_LED_R GPIO_PIN_9
-#define PIN_LED_G GPIO_PIN_10
-#define PIN_LED_B GPIO_PIN_11
+#define PIN_LED_R GPIOB, GPIO_PIN_9
+#define PIN_LED_G GPIOB, GPIO_PIN_10
+#define PIN_LED_B GPIOB, GPIO_PIN_11
 
 #define GPIO_BUTTON GPIOB
-#define PIN_BUTTON_SELECT GPIO_PIN_0
-#define PIN_BUTTON_LEFT GPIO_PIN_1
-#define PIN_BUTTON_RIGHT GPIO_PIN_2
+#define PIN_BUTTON_SELECT GPIOB, GPIO_PIN_0
+#define PIN_BUTTON_LEFT GPIOB, GPIO_PIN_1
+#define PIN_BUTTON_RIGHT GPIOB, GPIO_PIN_2
 
 #define GPIO_HEATER GPIOA
-#define PIN_HEATER GPIO_PIN_5
+#define PIN_HEATER GPIOA, GPIO_PIN_5
 #define PIN_FAN GPIO_PIN_3
 
 #define MAX_TEMP 80
@@ -159,9 +159,9 @@ int main(void)
   // Initialize TIM3 for low frequency PWM heater
   HAL_TIM_Base_Start_IT(&htim3);
 
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_R, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_G, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_SET);
 
 
   HAL_Delay(1000); // Wait for power supply to stabilize
@@ -466,9 +466,9 @@ void update_inputs() {
 	button_select.poll  <<= 1;
 	button_right.poll   <<= 1;
 
-	button_left.poll  |= HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_LEFT); // wrong button soldered on LEFT
-	button_select.poll  |=   !HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_SELECT);
-	button_right.poll  |=  !HAL_GPIO_ReadPin(GPIO_BUTTON, PIN_BUTTON_RIGHT);
+	button_left.poll  |= HAL_GPIO_ReadPin(PIN_BUTTON_LEFT); // wrong button soldered on LEFT
+	button_select.poll  |=   !HAL_GPIO_ReadPin(PIN_BUTTON_SELECT);
+	button_right.poll  |=  !HAL_GPIO_ReadPin(PIN_BUTTON_RIGHT);
 
 	if(is_pressed(button_right)) {
 		if(HAL_GetTick() - button_right.last_press > 60){
@@ -546,11 +546,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //		  PWM_Counter = 0;
 //	  }
 	if(PWM_Counter <= PWM_Value) {
-		HAL_GPIO_WritePin(GPIO_HEATER, PIN_HEATER, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIO_LED, PIN_LED_B, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(PIN_HEATER, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_RESET);
 	} else {
-		HAL_GPIO_WritePin(GPIO_HEATER, PIN_HEATER, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIO_LED, PIN_LED_B, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(PIN_HEATER, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(PIN_LED_B, GPIO_PIN_SET);
 	}
   }
 

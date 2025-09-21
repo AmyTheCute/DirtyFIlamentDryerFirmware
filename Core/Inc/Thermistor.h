@@ -2,7 +2,7 @@
  * Thermistor.h
  *
  *  Created on: Jun 19, 2024
- *      Author: amy
+ *      Author: Bunny
  */
 
 #ifndef THERMISTOR_H_

@@ -2,7 +2,7 @@
  * PID.c
  *
  *  Created on: Jun 19, 2024
- *      Author: Amy Haghighi
+ *      Author: Bunny
  */
 
 #include "PID.h"
